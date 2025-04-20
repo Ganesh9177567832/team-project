@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watchlist - MovieZone</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .movie-card {
+      text-align: center;
+    }
+    .movie-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .remove-btn {
+      background-color: #ff5050;
+      border: none;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Watchlist</h1>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="movie-list.html">Movies</a>
+      <a href="watchlist.html">Watchlist</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="movie-grid" id="watchlistContainer"></div>
+  </main>
+
+  <script>
+    const container = document.getElementById("watchlistContainer");
+
+    function loadWatchlist() {
+      const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+
+      if (watchlist.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>No movies in your watchlist.</p>";
+        return;
+      }
+
+      container.innerHTML = '';
+      watchlist.forEach(movie => {
+        const posterPath = movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : 'assets/no-image.png';
+
+        const card = document.createElement("div");
+        card.className = "movie-card";
+        card.innerHTML = `
+          <img src="${posterPath}" alt="${movie.title}" />
+          <h3><a href="movie-details.html?id=${movie.id}">${movie.title}</a></h3>
+          <p>${movie.release_date || 'N/A'}</p>
+          <button class="remove-btn" onclick="removeFromWatchlist(${movie.id})">Remove</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function removeFromWatchlist(id) {
+      let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+      watchlist = watchlist.filter(movie => movie.id !== id);
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      loadWatchlist();
+    }
+
+    loadWatchlist();
+  </script>
+</body>
+</html>

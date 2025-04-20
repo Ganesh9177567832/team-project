@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Details - MovieZone</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .movie-details {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      display: flex;
+      gap: 2rem;
+    }
+    .movie-details img {
+      width: 300px;
+      border-radius: 10px;
+    }
+    .movie-info h2 {
+      margin-bottom: 0.5rem;
+    }
+    .movie-info p {
+      margin-bottom: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MovieZone</h1>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="movie-list.html">Movies</a>
+<a href="watchlist.html">Watchlist</a>
+
+    </nav>
+  </header>
+
+  <main>
+    <div id="movieDetails" class="movie-details"></div>
+  </main>
+
+  <script>
+    const API_KEY = "1d07dafc5443c979c8b041912095f42d";
+    const detailsContainer = document.getElementById("movieDetails");
+
+    function getMovieIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    async function fetchMovieDetails(id) {
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`);
+        const movie = await res.json();
+
+        const poster = movie.poster_path 
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
+          : 'assets/no-image.png';
+
+        const genres = movie.genres.map(g => g.name).join(", ");
+
+        detailsContainer.innerHTML = `
+          <img src="${poster}" alt="${movie.title}" />
+          <div class="movie-info">
+            <h2>${movie.title}</h2>
+            <p><strong>Release Date:</strong> ${movie.release_date}</p>
+            <p><strong>Rating:</strong> ${movie.vote_average} / 10</p>
+            <p><strong>Genres:</strong> ${genres}</p>
+            <p>${movie.overview}</p>
+          </div>
+        `;
+      } catch (err) {
+        detailsContainer.innerHTML = "<p>Error loading movie details.</p>";
+        console.error(err);
+      }
+    }
+
+    const movieId = getMovieIdFromURL();
+    if (movieId) {
+      fetchMovieDetails(movieId);
+    } else {
+      detailsContainer.innerHTML = "<p>No movie selected.</p>";
+    }
+  </script>
+</body>
+</html>
