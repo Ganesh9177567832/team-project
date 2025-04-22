@@ -99,14 +99,7 @@ nav a:hover::after {
   font-size: 1.1rem;
 }
 
-/* Footer */
-footer {
-  background: #111;
-  color: #ccc;
-  text-align: center;
-  padding: 12px;
-  font-size: 0.9rem;
-}
+
 
 /* Animations */
 @keyframes fadeInScale {
@@ -129,6 +122,17 @@ footer {
     transform: translateY(0);
   }
 }
+#but{
+padding: 10px 16px;
+  background: #00d4ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: bold;
+}
+
 
 /* Responsive tweaks */
 @media (max-width: 600px) {
