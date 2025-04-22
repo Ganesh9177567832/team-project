@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .navbar {
+      background-color: #000;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .profile-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .profile-container h2 {
+      text-align: center;
+    }
+
+    .profile-info p {
+      margin: 10px 0;
+    }
+
+    .edit-btn, .logout-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .edit-btn:hover, .logout-btn:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div><strong>MovieZone</strong></div>
+    <div>
+      <a href="edit.html">Edit Profile</a>
+      <a href="logout.html">Logout</a>
+    </div>
+  </div>
+
+  <div class="profile-container">
+    <h2>User Profile</h2>
+    <div class="profile-info">
+      <p><strong>Name:</strong> Jane Smith</p>
+      <p><strong>Email:</strong> janesmith@example.com</p>
+      <p><strong>Favorite Genre:</strong> Action</p>
+    </div>
+    <a class="edit-btn" href="edit.html">Edit Profile</a>
+    <a class="logout-btn" href="logout.html">Logout</a>
+  </div>
+
+</body>
+</html>
