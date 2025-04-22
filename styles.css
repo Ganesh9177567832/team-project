@@ -16,6 +16,7 @@ header {
   color: #fff;
   padding: 15px 20px;
   display: flex;
+flex-direction:row;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
@@ -124,7 +125,7 @@ nav a:hover::after {
 }
 #but{
 padding: 10px 16px;
-  background: #00d4ff;
+  background:#000000;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -245,4 +246,34 @@ padding: 10px 16px;
 .watch:hover {
   background: #009ec3;
 }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+    color: black;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #eee;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
 
