@@ -3,103 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movies - MovieZone</title>
+  <title>MovieZone - Home</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <h1>MovieZone</h1>
     <nav>
-      <a href="home.html">Home</a>
-<a href="watchlist.html">Watchlist</a>
+      <a href="movie-list.html">Movies</a>
     </nav>
   </header>
 
-  <main class="movie-list-page">
-    <h2 class="page-title">Search Movies</h2>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search for a movie..." />
-      <button id="searchBtn">Search</button>
-    </div>
-    <p id="errorText" class="error-msg center-text"></p>
-    <div id="loadingSpinner" class="center-text" style="display: none;">Loading...</div>
-    <div class="movie-grid" id="movieContainer"></div>
+  <main>
+    <section class="welcome">
+      <h2>Welcome to MovieZone</h2>
+      <p>Discover trending movies, add to your watchlist, and more!</p>
+    </section>
+
+    <section class="featured">
+      <h3>Featured Trailers</h3>
+      <div class="slider">
+        <div class="slide active">
+          <img src="https://3238leblogdemarvelll-1278.kxcdn.com/wp-content/uploads/2020/07/dark-poster-saison-3-serie-netflix-tout-est-connecte.jpg" alt="Movie 1">
+          <h4>Dark</h4>
+        </div>
+        <div class="slide">
+          <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/sharedimages/2024/04/game-of-thrones-poster.jpg" alt="Movie 2">
+          <h4>Game of Thrones</h4>
+        </div>
+        <div class="slide">
+          <img src="https://m.media-amazon.com/images/M/MV5BZDU0ZWZlYWMtNzdhMC00MDUyLWI4MTQtODJiYjM2MmFkZmQwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Movie 3">
+          <h4>Stranger things</h4>
+        </div>
+<div class="slide">
+          <img src="https://cdna.artstation.com/p/assets/images/images/046/103/336/large/illusion-design-money-heist-poster-min.jpg?1644314844" alt="Movie 3">
+          <h4>Money heist</h4>
+        </div>
+      </div>
+    </section>
   </main>
+<div style="display: flex;justify-content:center;">
+<a href="movie-list.html" rel="Movies">
+<button id="but">movies</button>
+</a>
+ </div>
 
 
   <script>
-  const API_KEY = "1d07dafc5443c979c8b041912095f42d";
-  const container = document.getElementById("movieContainer");
-  const searchInput = document.getElementById("searchInput");
-  const searchBtn = document.getElementById("searchBtn");
-  const errorText = document.getElementById("errorText");
+  let slides = document.querySelectorAll('.slide');
+  let index = 0;
 
-  async function fetchMovies(query) {
-    try {
-      const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
-      const data = await res.json();
-
-      container.innerHTML = '';
-      errorText.textContent = '';
-
-      if (!data.results || data.results.length === 0) {
-        errorText.textContent = "No movies found.";
-        return;
-      }
-
-      data.results.forEach(movie => {
-        const posterPath = movie.poster_path
-          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-          : 'assets/no-image.png';
-
-        const card = document.createElement("div");
-        card.className = "movie-card";
-card.innerHTML = `
-  <img src="${posterPath}" alt="${movie.title}" />
-  <h3><a href="movie-details.html?id=${movie.id}">${movie.title}</a></h3>
-  <p>${movie.release_date || 'N/A'}</p>
-  <button class="watch" onclick="addToWatchlist(${encodeURIComponent(JSON.stringify(movie))})">Add to Watchlist</button>
-`;
-
-        container.appendChild(card);
-      });
-    } catch (err) {
-      errorText.textContent = "Something went wrong.";
-      console.error(err);
-    }
-  }
-function addToWatchlist(movie) {
-  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-  const exists = watchlist.find(m => m.id === movie.id);
-  if (!exists) {
-    watchlist.push(movie);
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    alert(`${movie.title} added to your Watchlist!`);
-  } else {
-    alert("Movie is already in your Watchlist.");
-  }
-}
-
-
-  searchBtn.addEventListener("click", () => {
-    const query = searchInput.value.trim();
-    if (query.length >= 3) {
-      fetchMovies(query);
-    } else {
-      errorText.textContent = "Please enter at least 3 characters.";
-    }
-  });
-
-  searchInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      searchBtn.click();
-    }
-  });
-
-  // Initial load
-  fetchMovies("Avengers: Infinity War");
+  setInterval(() => {
+    slides[index].classList.remove('active');
+    index = (index + 1) % slides.length;
+    slides[index].classList.add('active');
+  }, 4000);
 </script>
-
 </body>
 </html>
