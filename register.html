@@ -28,37 +28,76 @@
     </div>
   </main>
 
-  <script>
-    const regForm = document.getElementById('registerForm');
-    const errorMsg = document.getElementById('errorMsg');
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
-    regForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
+  const firebaseConfig = {
+    apiKey: "AIzaSyB4AMAQPK1feE82LwEdu2CdVJSVl9KcRsE",
+    authDomain: "moviezone-13fb4.firebaseapp.com",
+    projectId: "moviezone-13fb4",
+    storageBucket: "moviezone-13fb4.appspot.com",
+    messagingSenderId: "839486263197",
+    appId: "1:839486263197:web:2c2faefd841d49fd11a974",
+    measurementId: "G-TBNXDML2RG",
+    databaseURL: "https://moviezone-13fb4-default-rtdb.firebaseio.com"
+  };
 
-      if (!name || !email || !password || !confirmPassword) {
-        errorMsg.textContent = 'Please fill in all fields.';
-        return;
-      }
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
 
-      if (!email.includes('@')) {
-        errorMsg.textContent = 'Invalid email address.';
-        return;
-      }
+  const regForm = document.getElementById('registerForm');
+  const errorMsg = document.getElementById('errorMsg');
 
-      if (password !== confirmPassword) {
-        errorMsg.textContent = 'Passwords do not match.';
-        return;
-      }
+  regForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-      // Dummy registration success
-      errorMsg.style.color = 'green';
-      errorMsg.textContent = 'Registration successful (dummy)!';
-window.location.href="home.html";
-    });
-  </script>
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (!name || !email || !password || !confirmPassword) {
+      errorMsg.textContent = 'Please fill in all fields.';
+      return;
+    }
+
+    if (!email.includes('@')) {
+      errorMsg.textContent = 'Invalid email address.';
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      errorMsg.textContent = 'Passwords do not match.';
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        // Save additional user info to Realtime Database
+        set(ref(db, 'users/' + user.uid), {
+          name: name,
+          email: email,
+          createdAt: new Date().toISOString()
+        });
+
+        errorMsg.style.color = 'green';
+        errorMsg.textContent = 'Registration successful!';
+        setTimeout(() => {
+          window.location.href = 'home.html';
+        }, 1000);
+      })
+      .catch((error) => {
+        errorMsg.style.color = 'red';
+        errorMsg.textContent = error.message;
+      });
+  });
+</script>
 </body>
 </html>
